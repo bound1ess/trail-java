@@ -7,6 +7,6 @@ public class InputArgumentTest {
 
     @Test
     public void returnsArgumentName() {
-        assertEquals(2 + 2, 4);
+        assertEquals(new InputArgument("foo", true).getName(), "foo");
     }
 }

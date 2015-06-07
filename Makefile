@@ -3,7 +3,7 @@ VM=java
 SRC=src
 TESTS=tests
 OUT=build
-VENDOR='deps/*:src'
+VENDOR='deps/*:build'
 
 MAIN=trail.Main
 
