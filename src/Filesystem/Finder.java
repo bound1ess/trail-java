@@ -5,13 +5,12 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Finder {
     private final Set<String> extensions;
     private final ExtensionFilter extensionFilter;
 
-    public Finder(final String[] extensions) {
+    public Finder(final List<String> extensions) {
         this.extensions = new HashSet<>();
 
         for (String extension: extensions) {
@@ -19,29 +18,6 @@ public class Finder {
         }
 
         this.extensionFilter = new ExtensionFilter(this.extensions);
-    }
-
-    public List<String> listOfLines(final String src) throws Exception {
-        File file = null;
-
-        try {
-            file = new File(src);
-
-            if ( ! file.canRead()) {
-                return null;
-            }
-        } catch (Exception error) {
-            throw error; // throw again
-        }
-
-        List<String> lines = new ArrayList<>();
-        Scanner scanner = new Scanner(file);
-
-        while (scanner.hasNextLine()) {
-            lines.add(scanner.nextLine());
-        }
-
-        return lines;
     }
 
     public List<String> recursiveTraversal(final String src) {
@@ -75,7 +51,7 @@ public class Finder {
         }
 
         public boolean isAccepted(final String name) {
-            int dotIndex = name.indexOf('.');
+            int dotIndex = name.lastIndexOf('.');
 
             // Files without any extension are ignored.
             if (dotIndex == -1) {
