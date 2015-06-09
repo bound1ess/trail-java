@@ -1,37 +1,19 @@
 package trail.filesystem;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 
 public class Reader {
 
-    public static List<String> listOfLines(final String src) {
-        File file = null;
+    public static List<String> listOfLines(final Path src) {
+        List<String> lines = null;
 
         try {
-            file = new File(src);
-
-            if ( ! file.canRead()) {
-                return null;
-            }
+            lines = Files.readAllLines(src, StandardCharsets.UTF_8);
         } catch (Exception error) {
             return null;
-        }
-
-        List<String> lines = new ArrayList<>();
-
-        Scanner scanner = null;
-
-        try {
-            scanner = new Scanner(file);
-        } catch (Exception error) {
-            return null;
-        }
-
-        while (scanner.hasNextLine()) {
-            lines.add(scanner.nextLine());
         }
 
         return lines;

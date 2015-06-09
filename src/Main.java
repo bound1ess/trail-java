@@ -4,12 +4,15 @@ import trail.input.InputParser;
 import trail.filesystem.Finder;
 import trail.filesystem.Reader;
 
-import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.HashMap;
+
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Main {
     private final static String VERSION = "development"; // @todo
@@ -61,20 +64,12 @@ public class Main {
         System.out.printf("Finished in %.2f seconds.\n", executionTime / 1000.0);
     }
 
-    private static List<String> loadExtensions(final String srcDir) throws Exception {
-        boolean canRead = true;
-        File file = null;
-
-        try {
-            file = new File(srcDir, CONFIG_FILE);
-            canRead = file.canRead();
-        } catch (Exception error) {
-            canRead = false;
-        }
+    private static List<String> loadExtensions(final String srcDir) {
+        Path filePath = FileSystems.getDefault().getPath(srcDir);
 
         List<String> extensions = new ArrayList<>();
 
-        if ( ! canRead) {
+        if ( ! Files.isReadable(filePath)) {
             for (String extension: DEFAULT_EXTENSIONS) {
                 extensions.add(extension);
             }
@@ -82,7 +77,7 @@ public class Main {
             return extensions;
         }
 
-        List<String> lines = Reader.listOfLines(file.getPath());
+        List<String> lines = Reader.listOfLines(filePath);
         boolean keepDefault = lines.size() == 0 || lines.get(0).equals("keep");
 
         if (lines.size() > 0) {

@@ -21,13 +21,17 @@ public class ReaderTest {
 
     @Test
     public void failsToReadFile() {
-        assertEquals(null, Reader.listOfLines("foo" + System.currentTimeMillis()));
+        assertEquals(null,
+            Reader.listOfLines(
+                createNewFileSystem().getPath("foo" + System.currentTimeMillis())
+            )
+        );
     }
 
     @Test
     public void readsFile() {
         FileSystem fs = createNewFileSystem();
-        Path filePath = fs.getPath("/foo");
+        Path filePath = fs.getPath("/bar.txt");
 
         List<String> lines = new ArrayList<>();
 
@@ -43,9 +47,9 @@ public class ReaderTest {
         }
 
         // assert
-        assertThat(Reader.listOfLines(filePath.toString()), instanceOf(List.class));
+        assertThat(Reader.listOfLines(filePath), instanceOf(List.class));
 
-        List<String> returned = Reader.listOfLines(filePath.toString());
+        List<String> returned = Reader.listOfLines(filePath);
 
         assertEquals(returned.size(), 3);
         assertEquals(returned.get(0), "foo");
