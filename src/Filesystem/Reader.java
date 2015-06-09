@@ -7,7 +7,7 @@ import java.io.File;
 
 public class Reader {
 
-    public static List<String> listOfLines(final String src) throws Exception {
+    public static List<String> listOfLines(final String src) {
         File file = null;
 
         try {
@@ -21,7 +21,14 @@ public class Reader {
         }
 
         List<String> lines = new ArrayList<>();
-        Scanner scanner = new Scanner(file);
+
+        Scanner scanner = null;
+
+        try {
+            scanner = new Scanner(file);
+        } catch (Exception error) {
+            return null;
+        }
 
         while (scanner.hasNextLine()) {
             lines.add(scanner.nextLine());
