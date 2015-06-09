@@ -7,3 +7,6 @@ wget -O deps/hamcrest.jar \
 
 wget -O deps/jimfs.jar \
     http://search.maven.org/remotecontent?filepath=com/google/jimfs/jimfs/1.0/jimfs-1.0.jar
+
+wget -O deps/guava.jar \
+    http://search.maven.org/remotecontent?filepath=com/google/guava/guava/18.0/guava-18.0.jar
