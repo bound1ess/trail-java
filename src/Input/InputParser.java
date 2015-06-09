@@ -22,33 +22,57 @@ public class InputParser {
         config.put("verbose", "no"); // DO NOT show processed files
         config.put("debug", "no"); // DO NOT show debug information
 
-        if ( ! input.isEmpty()) {
-            String srcDir = input.poll();
+        while ( ! input.isEmpty()) {
+            String option = input.poll();
 
-            if ( ! srcDir.startsWith("/")) {
-                srcDir = new File(config.get("dir"), srcDir).getPath();
+            if (option.startsWith("--dir")) {
+                String value = parseOptionValue(option);
+
+                if (value == null) {
+                    if (input.isEmpty()) {
+                        throw new IllegalArgumentException("Value missing (--dir).");
+                    }
+
+                    value = removeEscapeChars(input.poll());
+                }
+
+                config.put("dir", value);
+                continue;
             }
 
-            config.put("dir", srcDir);
-        }
-
-        if ( ! input.isEmpty()) {
-            config.put("fix", input.poll().equals("fix") ? "yes" : "no");
-        }
-
-        while ( ! input.isEmpty()) {
-            switch (input.poll()) {
+            switch (option) {
                 case "--verbose":
                     config.put("verbose", "yes");
 
                 case "--debug":
                     config.put("debug", "yes");
 
+                case "--fix":
+                    config.put("fix", "yes");
+
                 default:
-                    throw new IllegalArgumentException("Unrecognized input option.");
+                    throw new IllegalArgumentException("Unrecognized option: " + option);
             }
         }
 
         return config;
+    }
+
+    private static String parseOptionValue(final String option) {
+        int equalSignIndex = option.indexOf('=');
+
+        if (equalSignIndex == -1) {
+            return null; // refer to the next queue element
+        }
+
+        return removeEscapeChars(option.substring(equalSignIndex));
+    }
+
+    private static String removeEscapeChars(final String value) {
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+            return value.substring(1, value.length() - 1);
+        }
+
+        return value;
     }
 }
