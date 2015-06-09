@@ -1,6 +1,6 @@
 package trail;
 
-import trail.input.ArgumentParser;
+import trail.input.InputParser;
 import trail.filesystem.Finder;
 import trail.filesystem.Reader;
 
