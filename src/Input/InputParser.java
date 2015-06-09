@@ -43,12 +43,15 @@ public class InputParser {
             switch (option) {
                 case "--verbose":
                     config.put("verbose", "yes");
+                    break;
 
                 case "--debug":
                     config.put("debug", "yes");
+                    break;
 
                 case "--fix":
                     config.put("fix", "yes");
+                    break;
 
                 default:
                     throw new IllegalArgumentException("Unrecognized option: " + option);
@@ -65,11 +68,15 @@ public class InputParser {
             return null; // refer to the next queue element
         }
 
-        return removeEscapeChars(option.substring(equalSignIndex));
+        return removeEscapeChars(option.substring(equalSignIndex + 1));
     }
 
     private static String removeEscapeChars(final String value) {
-        if (value.startsWith("\"") && value.endsWith("\"")) {
+        String a = "\"", b = "'";
+
+        if ((value.startsWith(a) && value.endsWith(a))
+            || (value.startsWith(b) && value.endsWith(b))) {
+
             return value.substring(1, value.length() - 1);
         }
 

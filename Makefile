@@ -10,6 +10,7 @@ MAIN=trail.Main
 OUT_FLAGS=-d $(OUT)
 VENDOR_FLAGS=-cp $(VENDOR)
 RUN_FLAGS=-cp $(OUT) $(MAIN)
+TEST_FLAGS=-cp $(VENDOR) org.junit.runner.JUnitCore trail.AllTestsSuite
 
 SRC_LIST=@$(OUT)/source_files
 TESTS_LIST=@$(OUT)/test_files
@@ -22,6 +23,9 @@ all: list-source-files ; $(COMPILER) $(OUT_FLAGS) $(SRC_LIST)
 
 # builds tests
 test: list-test-files ; $(COMPILER) $(VENDOR_FLAGS) $(OUT_FLAGS) $(TESTS_LIST)
+
+# runs tests
+run-tests: ; $(VM) $(TEST_FLAGS)
 
 # runs the project
 run: ; $(VM) $(RUN_FLAGS)
