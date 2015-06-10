@@ -16,8 +16,10 @@ public class Validator {
     }
 
     public static boolean isBroken(final List<String> lines) {
+        int extra = System.lineSeparator().length(); // Java 8(7?)
+
         for (String line: lines) {
-            if ( ! line.isEmpty() && Character.isWhitespace(line.charAt(line.length() - 1))) {
+            if (line.length() > rightTrim(line).length() + extra) {
                 return true;
             }
         }
@@ -28,7 +30,7 @@ public class Validator {
     private static String rightTrim(final String line) {
         int position = line.length() - 1;
 
-        while (position >= 0 && Character.isWhitespace(line.charAt(position))) {
+        while (position >= 0 && (int) line.charAt(position) <= 32) {
             position--;
         }
 

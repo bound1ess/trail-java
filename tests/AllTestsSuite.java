@@ -8,5 +8,6 @@ import org.junit.runners.Suite;
     trail.input.InputParserTest.class,
     trail.filesystem.ReaderTest.class,
     trail.filesystem.FinderTest.class,
+    trail.ValidatorTest.class,
 })
 public class AllTestsSuite {}
