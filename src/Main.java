@@ -30,7 +30,7 @@ public class Main {
         "pas", "asm", // Pascal and ASM, lol
     };
 
-    public static void main(final String[] arguments) throws Exception {
+    public static void main(final String[] arguments) {
         // Start time.
         long startTime = System.currentTimeMillis();
 

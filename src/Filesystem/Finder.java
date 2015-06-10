@@ -36,7 +36,7 @@ public class Finder {
                         files.add(file);
                     }
                 } else {
-                    files.add(path.toString());
+                    files.add(path.getFileName().toString());
                 }
             }
         } catch (Exception error) {
