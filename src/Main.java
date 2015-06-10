@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.Path;
 
 public class Main {
@@ -53,7 +54,7 @@ public class Main {
 
         Finder finder = new Finder(loadExtensions(workDir));
 
-        for (String filePath: finder.recursiveTraversal(workDir)) {
+        for (String filePath: finder.recursiveTraversal(Paths.get(workDir))) {
             if (config.get("verbose").equals("yes")) {
                 System.out.println(filePath);
             }

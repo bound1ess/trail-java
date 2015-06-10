@@ -7,5 +7,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     trail.input.InputParserTest.class,
     trail.filesystem.ReaderTest.class,
+    trail.filesystem.FinderTest.class,
 })
 public class AllTestsSuite {}
