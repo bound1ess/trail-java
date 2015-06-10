@@ -43,6 +43,11 @@ public class FinderTest {
                 dir.resolve("bar.txt"), ImmutableList.of("123"), StandardCharsets.UTF_8
             );
 
+            // Won't be shown (disallowed extension).
+            Files.write(
+                dir.resolve("fake.jpg"), ImmutableList.of("abc"), StandardCharsets.UTF_8
+            );
+
             Files.createDirectory(dir.resolve("baz"));
             Files.write(
                 dir.resolve("baz").resolve("fizz.txt"),

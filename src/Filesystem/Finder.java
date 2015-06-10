@@ -35,7 +35,7 @@ public class Finder {
                     for (String file: recursiveTraversal(path)) {
                         files.add(file);
                     }
-                } else {
+                } else if (isAccepted(path.toString())) {
                     files.add(path.getFileName().toString());
                 }
             }
