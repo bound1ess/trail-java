@@ -30,4 +30,20 @@ public class ValidatorTest {
 
         assertTrue(Validator.isBroken(lines));
     }
+
+    @Test
+    public void removesTrailingWhitespaces() {
+        List<String> lines = new ArrayList<>();
+
+        lines.add("foo\n");
+        lines.add(" bar \n");
+        lines.add("baz   ");
+
+        lines = Validator.fix(lines);
+
+        assertEquals(lines.size(), 3);
+        assertEquals(lines.get(0), "foo\n");
+        assertEquals(lines.get(1), " bar\n");
+        assertEquals(lines.get(2), "baz\n");
+    }
 }

@@ -7,9 +7,10 @@ public class Validator {
 
     public static List<String> fix(final List<String> lines) {
         List<String> newLines = new ArrayList<>();
+        String separator = System.lineSeparator();
 
         for (String line: lines) {
-            newLines.add(rightTrim(line));
+            newLines.add(rightTrim(line) + separator);
         }
 
         return newLines;
