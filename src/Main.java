@@ -36,17 +36,24 @@ public class Main {
         // Parse input.
         Map<String, String> config = InputParser.parse(arguments);
 
+        String workDir = config.get("dir");
+
+        if ( ! Files.isReadable(Paths.get(workDir))) {
+            System.out.println("Directory " + workDir + " does not exist!");
+            return;
+        }
+
+        // Display header.
+        System.out.println("Trail (ver. " + VERSION + ") is running...");
+        System.out.println(
+            "Current working directory is " + Paths.get(workDir).toAbsolutePath().toString()
+        );
+
         // If debug is enabled, dump config map.
         if (config.get("debug").equals("yes")) {
             System.out.println("Dumping current configuration...");
             System.out.println(config.toString());
         }
-
-        String workDir = config.get("dir");
-
-        // Display header.
-        System.out.println("Trail (ver. " + VERSION + ") is running...");
-        System.out.println("Current working directory is " + workDir);
 
         List<String> extensions = loadExtensions(workDir);
         Finder finder = new Finder(extensions);
@@ -56,18 +63,30 @@ public class Main {
             System.out.println("Extensions: " + extensions.toString());
         }
 
-        for (String filePath: finder.recursiveTraversal(Paths.get(workDir))) {
-            if (config.get("verbose").equals("yes")) {
-                System.out.print("Checking " + filePath + "...");
+        boolean silent = config.get("verbose").equals("no");
+        silent = silent && config.get("debug").equals("no");
 
-                if (config.get("fix").equals("yes")) {
-                    // Fix the file
-                    // @todo check if fixed
-                    System.out.println(" Fixed.");
-                } else {
-                    System.out.println("");
+        boolean fixFiles = config.get("fix").equals("yes");
+
+        if (fixFiles) {
+            System.out.println("Fixing broken files...");
+        }
+
+        for (String filePath: finder.recursiveTraversal(Paths.get(workDir))) {
+            if ( ! silent) {
+                System.out.print("Checking " + filePath + "...");
+            }
+
+            List<String> lines = Reader.listOfLines(Paths.get(filePath));
+            List<Integer> brokenLines = Validator.findBrokenLines(lines);
+
+            if (brokenLines == null) { // file is OK
+                if ( ! silent) {
+                    System.out.println(" OK");
                 }
-            } // check if valid
+
+                continue;
+            }
         }
 
         // Calculate the time.

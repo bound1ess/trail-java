@@ -66,8 +66,8 @@ public class FinderTest {
         List<String> files = finder.recursiveTraversal(dir);
 
         assertEquals(files.size(), 2);
-        assertTrue(files.indexOf("bar.txt") != -1);
-        assertTrue(files.indexOf("fizz.txt") != -1);
+        assertTrue(files.get(0).endsWith("bar.txt"));
+        assertTrue(files.get(1).endsWith("fizz.txt"));
     }
 
     private FileSystem createNewFileSystem() {
