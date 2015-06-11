@@ -82,10 +82,22 @@ public class Main {
 
             if (brokenLines == null) { // file is OK
                 if ( ! silent) {
-                    System.out.println(" OK");
+                    System.out.println(" [OK]");
                 }
 
                 continue;
+            }
+
+            if ( ! fixFiles) {
+                if (silent) {
+                    System.out.println(
+                        "File " + filePath + " is broken, lines " + brokenLines.toString()
+                    );
+                } else {
+                    System.out.println(" Broken, lines " + brokenLines.toString());
+                }
+            } else {
+
             }
         }
 
