@@ -2,6 +2,7 @@ package trail;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -16,19 +17,27 @@ public class ValidatorTest {
         lines.add("\n");
         lines.add("bar\nbaz\n");
 
-        assertFalse(Validator.isBroken(lines));
+        assertEquals(null, Validator.findBrokenLines(lines));
 
         lines.clear();
         lines.add("foo \n");
 
-        assertTrue(Validator.isBroken(lines));
+        List<Integer> brokenLines = Validator.findBrokenLines(lines);
+
+        assertThat(brokenLines, instanceOf(List.class));
+        assertEquals((int) brokenLines.size(), 1);
+        assertEquals(brokenLines.get(0), Integer.valueOf(1));
 
         lines.clear();
         lines.add("foo");
         lines.add("bar\n");
         lines.add("baz    ");
 
-        assertTrue(Validator.isBroken(lines));
+        brokenLines = Validator.findBrokenLines(lines);
+
+        assertThat(brokenLines, instanceOf(List.class));
+        assertEquals((int) brokenLines.size(), 1);
+        assertEquals(brokenLines.get(0), Integer.valueOf(3));
     }
 
     @Test
@@ -39,7 +48,7 @@ public class ValidatorTest {
         lines.add(" bar \n");
         lines.add("baz   ");
 
-        lines = Validator.fix(lines);
+        lines = Validator.fixBrokenLines(lines);
 
         assertEquals(lines.size(), 3);
         assertEquals(lines.get(0), "foo\n");

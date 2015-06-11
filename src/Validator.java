@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Validator {
 
-    public static List<String> fix(final List<String> lines) {
+    public static List<String> fixBrokenLines(final List<String> lines) {
         List<String> newLines = new ArrayList<>();
         String separator = System.lineSeparator();
 
@@ -16,16 +16,19 @@ public class Validator {
         return newLines;
     }
 
-    public static boolean isBroken(final List<String> lines) {
-        int extra = System.lineSeparator().length(); // Java 8(7?)
+    public static List<Integer> findBrokenLines(final List<String> lines) {
+        int extra = System.lineSeparator().length(), lineNumber = 1;
+        List<Integer> brokenLines = new ArrayList<>();
 
         for (String line: lines) {
             if (line.length() > rightTrim(line).length() + extra) {
-                return true;
+                brokenLines.add(lineNumber);
             }
+
+            lineNumber++;
         }
 
-        return false;
+        return brokenLines.size() > 0 ? brokenLines : null;
     }
 
     private static String rightTrim(final String line) {
