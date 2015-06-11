@@ -9,5 +9,6 @@ import org.junit.runners.Suite;
     trail.filesystem.ReaderTest.class,
     trail.filesystem.FinderTest.class,
     trail.ValidatorTest.class,
+    trail.output.OutputWriterTest.class,
 })
 public class AllTestsSuite {}

@@ -7,10 +7,9 @@ public class Validator {
 
     public static List<String> fixBrokenLines(final List<String> lines) {
         List<String> newLines = new ArrayList<>();
-        String separator = System.lineSeparator();
 
         for (String line: lines) {
-            newLines.add(rightTrim(line) + separator);
+            newLines.add(rightTrim(line));
         }
 
         return newLines;

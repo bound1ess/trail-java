@@ -51,8 +51,8 @@ public class ValidatorTest {
         lines = Validator.fixBrokenLines(lines);
 
         assertEquals(lines.size(), 3);
-        assertEquals(lines.get(0), "foo\n");
-        assertEquals(lines.get(1), " bar\n");
-        assertEquals(lines.get(2), "baz\n");
+        assertEquals(lines.get(0), "foo");
+        assertEquals(lines.get(1), " bar");
+        assertEquals(lines.get(2), "baz");
     }
 }

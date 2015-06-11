@@ -1,7 +1,7 @@
 package trail.output;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.StandardOpenOption;
+//import java.nio.file.StandardOpenOption;
 import java.nio.file.Path;
 import java.nio.file.Files;
 
@@ -15,9 +15,7 @@ public class OutputWriter {
         BufferedWriter writer = null;
 
         try {
-            writer = Files.newBufferedWriter(
-                to, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING
-            );
+            writer = Files.newBufferedWriter(to, StandardCharsets.UTF_8);
         } catch (Exception error) {
             return false;
         }
