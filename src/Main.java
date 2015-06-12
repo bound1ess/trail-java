@@ -73,7 +73,11 @@ public class Main {
             System.out.println("Fixing broken files...");
         }
 
+        int totalFiles = 0, brokenFiles = 0;
+
         for (String filePath: finder.recursiveTraversal(Paths.get(workDir))) {
+            totalFiles++;
+
             if ( ! silent) {
                 System.out.print("Checking " + filePath + "...");
             }
@@ -88,6 +92,8 @@ public class Main {
 
                 continue;
             }
+
+            brokenFiles++;
 
             if ( ! fixFiles) {
                 if (silent) {
@@ -110,6 +116,12 @@ public class Main {
                 }
             }
         }
+
+        // Print statistics.
+        System.out.printf(
+            "Total files: %d, good: %d, broken: %d\n",
+            totalFiles, (totalFiles - brokenFiles), brokenFiles
+        );
 
         // Calculate the time.
         long executionTime = System.currentTimeMillis() - startTime;
