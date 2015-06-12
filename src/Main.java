@@ -3,13 +3,14 @@ package trail;
 import trail.input.InputParser;
 import trail.filesystem.Finder;
 import trail.filesystem.Reader;
+import trail.output.OutputWriter;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-import java.nio.file.FileSystems;
+//import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
@@ -97,7 +98,16 @@ public class Main {
                     System.out.println(" Broken, lines " + brokenLines.toString());
                 }
             } else {
+                boolean fixed = OutputWriter.writeList(
+                    Paths.get(filePath), Validator.fixBrokenLines(lines)
+                );
 
+                if (silent) {
+                    System.out.print("File " + filePath);
+                    System.out.println(fixed ? " was fixed" : " was not fixed");
+                } else {
+                    System.out.println(fixed ? " [Fixed]" : " Failed to fix");
+                }
             }
         }
 
@@ -107,7 +117,7 @@ public class Main {
     }
 
     private static List<String> loadExtensions(final String srcDir) {
-        Path filePath = FileSystems.getDefault().getPath(srcDir);
+        Path filePath = Paths.get(srcDir);
 
         List<String> extensions = new ArrayList<>();
         List<String> lines = Reader.listOfLines(filePath);
