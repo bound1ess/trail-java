@@ -10,13 +10,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-//import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 
 public class Main {
-    private final static String VERSION = "development"; // @todo
     private final static String CONFIG_FILE = ".trail-config";
 
     private final static String[] DEFAULT_EXTENSIONS = {
@@ -44,36 +42,35 @@ public class Main {
             return;
         }
 
-        // Display header.
-        System.out.println("Trail (ver. " + VERSION + ") is running...");
-        System.out.println(
-            "Current working directory is " + Paths.get(workDir).toAbsolutePath().toString()
-        );
-
-        // If debug is enabled, dump config map.
-        if (config.get("debug").equals("yes")) {
-            System.out.println("Dumping current configuration...");
-            System.out.println(config.toString());
-        }
+        boolean debugMode = config.get("debug").equals("yes");
 
         List<String> extensions = loadExtensions(workDir);
         Finder finder = new Finder(extensions);
 
+        // If debug is enabled, dump config map.
+        if (debugMode) {
+            System.out.println("Dumping current configuration...");
+            System.out.println(config.toString());
+        }
+
+        // Display header.
+        System.out.println(
+            "Working with directory " + Paths.get(workDir).toAbsolutePath().toString()
+        );
+
         // If debug is enabled, print all extensions.
-        if (config.get("debug").equals("yes")) {
+        if (debugMode) {
             System.out.println("Extensions: " + extensions.toString());
         }
 
-        boolean silent = config.get("verbose").equals("no");
-        silent = silent && config.get("debug").equals("no");
-
+        boolean silent = config.get("verbose").equals("no") && ! debugMode;
         boolean fixFiles = config.get("fix").equals("yes");
+
+        int totalFiles = 0, brokenFiles = 0;
 
         if (fixFiles) {
             System.out.println("Fixing broken files...");
         }
-
-        int totalFiles = 0, brokenFiles = 0;
 
         for (String filePath: finder.recursiveTraversal(Paths.get(workDir))) {
             totalFiles++;
@@ -108,6 +105,10 @@ public class Main {
                     Paths.get(filePath), Validator.fixBrokenLines(lines)
                 );
 
+                if (fixed) {
+                    brokenFiles--;
+                }
+
                 if (silent) {
                     System.out.print("File " + filePath);
                     System.out.println(fixed ? " was fixed" : " was not fixed");
@@ -123,16 +124,16 @@ public class Main {
             totalFiles, (totalFiles - brokenFiles), brokenFiles
         );
 
-        // Calculate the time.
-        long executionTime = System.currentTimeMillis() - startTime;
-        System.out.printf("Finished in %.2f second(s).\n", executionTime / 1000.0);
+        // Calculate elapsed time.
+        System.out.printf(
+            "Finished in %.2f second(s)\n",
+            (System.currentTimeMillis() - startTime) / 1000.0
+        );
     }
 
     private static List<String> loadExtensions(final String srcDir) {
-        Path filePath = Paths.get(srcDir);
-
-        List<String> extensions = new ArrayList<>();
-        List<String> lines = Reader.listOfLines(filePath);
+        Path filePath = Paths.get(srcDir, CONFIG_FILE);
+        List<String> extensions = new ArrayList<>(), lines = Reader.listOfLines(filePath);
 
         if (lines == null) {
             for (String extension: DEFAULT_EXTENSIONS) {
@@ -142,9 +143,10 @@ public class Main {
             return extensions;
         }
 
-        boolean keepDefault = lines.size() == 0 || lines.get(0).equals("keep");
+        boolean keepDefault = false;
 
-        if (lines.size() > 0) {
+        if ( ! lines.isEmpty()) {
+            keepDefault = lines.get(0).equals("keep");
             lines.remove(0);
         }
 

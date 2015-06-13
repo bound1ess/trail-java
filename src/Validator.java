@@ -27,7 +27,7 @@ public class Validator {
             lineNumber++;
         }
 
-        return brokenLines.size() > 0 ? brokenLines : null;
+        return ! brokenLines.isEmpty() ? brokenLines : null;
     }
 
     private static String rightTrim(final String line) {
