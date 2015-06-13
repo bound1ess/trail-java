@@ -24,6 +24,12 @@ all: list-source-files ; $(COMPILER) $(OUT_FLAGS) $(SRC_LIST)
 # builds tests
 test: list-test-files ; $(COMPILER) $(VENDOR_FLAGS) $(OUT_FLAGS) $(TESTS_LIST)
 
+# builds JAR file
+jar: clean all ; cd build && jar -cvfm trail.jar ../manifest.txt trail && cd ..
+
+# runs (assuming it's built) JAR file
+run-jar: ; $(VM) -jar $(OUT)/trail.jar
+
 # runs tests
 run-tests: ; $(VM) $(TEST_FLAGS)
 

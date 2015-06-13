@@ -26,7 +26,7 @@ public class Main {
         "js", "coffee", // JS and its friend
         "html", "css", // web development
         "bash", "sh", // Bash, Shell
-        "md", // Markdown
+        "md", "txt", // Markdown, plain text files
         "pas", "asm", // Pascal and ASM, lol
     };
 
